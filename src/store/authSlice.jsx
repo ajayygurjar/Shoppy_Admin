@@ -30,7 +30,7 @@ const authSlice=createSlice({
             localStorage.removeItem('token');
             localStorage.removeItem('email')
         },
-        toggelMode(state){
+        toggleMode(state){
             state.isLoggedIn=!state.isLoggedIn;
             state.error=null;
 
@@ -42,7 +42,7 @@ const authSlice=createSlice({
             state.error=action.payload;
 
         },
-        opneloginModal(state){
+        openLoginModal(state){
             state.isLoginModalOpen=true;
         },
         closeLoginModal(state){

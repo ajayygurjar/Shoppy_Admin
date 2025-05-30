@@ -1,20 +1,27 @@
-import React from 'react'
-import { Navbar,Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import { useDispatch, } from "react-redux";
+import { Link } from "react-router-dom";
+import { authActions } from "../../store/authSlice";
+import { useNavigate } from 'react-router-dom';
 
 
 const Header = () => {
-    const logoutHandler=()=>{
-        
-    }
+  const dispatch=useDispatch()
 
+  const navigate=useNavigate()
+
+  const logoutHandler=()=>{
+navigate('/')
+dispatch(authActions.logout())
+  }
 
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
         <Navbar.Brand as={Link} to="/home">
-          AdaptHome's Admin
+          Shoppy Admin
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="admin-navbar-nav" />
         <Navbar.Collapse id="admin-navbar-nav">
