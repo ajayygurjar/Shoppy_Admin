@@ -6,28 +6,28 @@ import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 const API_Key = 'AIzaSyDVvJYqgz-adO06OWVJcGPCeEdwSMYz1is';
-const SignUp_Url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=';
 const SignIn_Url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
+const adminEmails = ['ayan@g.com', 'aman@gmail.com'];
 
 const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  //const isLogin = useSelector((state) => state.auth.isLogin);
   const isLoading = useSelector((state) => state.auth.isLoading);
   const error = useSelector((state) => state.auth.error);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  //const [confirmPassword, setConfirmPassword] = useState('');
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-  const confirmPasswordInputRef = useRef();
+  //const confirmPasswordInputRef = useRef();
 
-  const switchAuthModeHandler = () => {
-    dispatch(authActions.toggleMode());
-  };
+  // const switchAuthModeHandler = () => {
+  //   dispatch(authActions.toggleMode());
+  // };
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -35,33 +35,39 @@ const Auth = () => {
     const enteredEmail = email.trim();
     const enteredPassword = password.trim();
 
-    if (!isLogin) {
-      const confirmPasswordValue = confirmPassword.trim();
-      if (enteredPassword !== confirmPasswordValue) {
-        dispatch(authActions.setError('Passwords do not match!'));
-        return;
-      }
-      if (enteredPassword.length < 6) {
-        dispatch(authActions.setError('Password must be at least 6 characters.'));
-        return;
-      }
-    }
+    // if (!isLogin) {
+    //   const confirmPasswordValue = confirmPassword.trim();
+    //   if (enteredPassword !== confirmPasswordValue) {
+    //     dispatch(authActions.setError('Passwords do not match!'));
+    //     return;
+    //   }
+    //   if (enteredPassword.length < 6) {
+    //     dispatch(authActions.setError('Password must be at least 6 characters.'));
+    //     return;
+    //   }
+    // }
 
     dispatch(authActions.setLoading(true));
     dispatch(authActions.setError(null));
 
-    const url = isLogin
-      ? `${SignIn_Url}${API_Key}`
-      : `${SignUp_Url}${API_Key}`;
+    // const url = isLogin
+    //   ? `${SignIn_Url}${API_Key}`
+    //   : `${SignUp_Url}${API_Key}`;
 
     try {
-      const response = await axios.post(url, {
+      const response = await axios.post(`${SignIn_Url}${API_Key}`, {
         email: enteredEmail,
         password: enteredPassword,
         returnSecureToken: true,
       });
 
       const data = response.data;
+
+        if (!adminEmails.includes(data.email)) {
+        dispatch(authActions.setError('Access denied. Admins only.'));
+        dispatch(authActions.setLoading(false));
+        return;
+      }
 
       dispatch(authActions.login({
         token: data.idToken,
@@ -94,7 +100,7 @@ const Auth = () => {
       
       <Row className="justify-content-center">
         <Col md={6}>
-          <h2 className="mb-4 text-center">{isLogin ? 'Login' : 'Sign Up'}</h2>
+          <h2 className="mb-4 text-center">Admin Login</h2>
           <Form onSubmit={submitHandler}>
             <Form.Group className="mb-3" controlId="email">
               <Form.Label>Your Email</Form.Label>
@@ -118,7 +124,7 @@ const Auth = () => {
                 ref={passwordInputRef}
               />
             </Form.Group>
-            {!isLogin && (
+            {/* {!isLogin && (
               <Form.Group className="mb-3" controlId="confirmPassword">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
@@ -130,23 +136,23 @@ const Auth = () => {
                   ref={confirmPasswordInputRef}
                 />
               </Form.Group>
-            )}
+            )} */}
             {error && <p className="text-danger">{error}</p>}
             <div className="d-grid gap-2">
               {!isLoading ? (
                 <Button variant="primary" type="submit">
-                  {isLogin ? 'Login' : 'Create Account'}
+                  Login
                 </Button>
               ) : (
                 <p>Sending request...</p>
               )}
             </div>
           </Form>
-          <div className="text-center mt-3">
+          {/* <div className="text-center mt-3">
             <Button variant="link" onClick={switchAuthModeHandler}>
               {isLogin ? 'Create new account' : 'Login with existing account'}
             </Button>
-          </div>
+          </div> */}
         </Col>
       </Row>
     </Container>
