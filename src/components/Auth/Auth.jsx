@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const API_Key = 'AIzaSyDVvJYqgz-adO06OWVJcGPCeEdwSMYz1is';
 const SignIn_Url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
-const adminEmails = ['ayan@g.com', 'aman@gmail.com'];
+const adminEmails = ['ajay1651@gmail.com','ayan@g.com', 'aman@gmail.com'];
 
 const Auth = () => {
   const dispatch = useDispatch();
