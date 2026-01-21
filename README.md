@@ -55,7 +55,7 @@ Before running this project, make sure you have:
 4. **Configure Admin Access**
    - Update the admin emails in `src/components/Auth/Auth.jsx`:
      ```javascript
-     const adminEmails = ['ayan@g.com', 'aman@gmail.com'];;
+     const adminEmails = ['ajay@gmail.com','ayan@g.com', 'aman@gmail.com'];;
      ```
 
 ## 🚀 Getting Started
